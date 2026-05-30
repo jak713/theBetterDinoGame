@@ -1,6 +1,6 @@
 ## Setup
 
-> **Note:** Pygame does not yet support Python 3.14+. This project strictly requires **Python 3.13**.
+> **Note:** Pygame does not yet support Python 3.14+. This project uses Python 3.13.
 
 ### 0. Prerequisites
 You must have [uv](https://astral.sh) installed. If needed, you can install it via pip:
