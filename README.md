@@ -1,7 +1,7 @@
 ## Notes for Developers
 
 > [!IMPORTANT]
->Remember to work on your individual branches.
+>Remember to work on your individual branches. When pushing code and opening a PR remember to pull from `main` branch first. 
 
 ## Setup
 
