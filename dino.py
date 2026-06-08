@@ -1,10 +1,5 @@
-# Name: May
-# Hobby: Reading
-# Why I enjoy it: I find reading a great way to switch off after a busy day at work.
-
-
-import pygame
 from sys import exit
+import pygame
 
 pygame.init()
 pygame.font.init()
@@ -37,7 +32,7 @@ class Player(pygame.sprite.Sprite):
     # user input up-arrow for movement
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP] and self.rect.bottom >= 250:
+        if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 250:
             self.gravity = -20
 
     def apply_gravity(self):
