@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
-
+# Pycharm related 
+.idea/
 # Virtual environments
 .venv
