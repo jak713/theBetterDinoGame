@@ -1,8 +1,8 @@
 import pygame
-from constants import PLAYER_COLOUR, PLAYER_SIZE
+from constants import PLAYER_COLOUR, PLAYER_SIZE, GRAVITY
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, username):
+    def __init__(self, username:str="Player"):
         super().__init__()
         # player, rectangle size
         self.image = pygame.Surface(PLAYER_SIZE)
@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
     def player_input(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 250:
-            self.gravity = -20
+            self.gravity = GRAVITY
 
     def apply_gravity(self):
         self.gravity += 1
