@@ -24,12 +24,13 @@ def main() -> None:
     ground.fill(GROUND_COLOUR)
 
     player = pygame.sprite.GroupSingle()
-    player.add(Player("player1"))
+    player.add(Player())
 
     obstacles = pygame.sprite.Group()
     field = ObstacleField(obstacles)
 
     score = 0
+    game_over = False
 
     while True:
         for event in pygame.event.get():
@@ -37,25 +38,27 @@ def main() -> None:
                 print(score)
                 pygame.quit()
                 exit()
+        if not game_over:
 
-        for o in obstacles:
-            if o.rect.colliderect(player.sprite.rect):
-                print(score)
-                return
+            for o in obstacles:
+                if o.rect.colliderect(player.sprite.rect):
+                    print(score)
+                    game_over = True
+            
+            obstacles.update(dt)
+            field.update(dt)
+            player.update()
 
         screen.blit(background, (0, 0))
         screen.blit(ground, ground_rect)
         player.draw(screen)
-        player.update()
-        field.update(dt)
-        obstacles.update(dt)
         obstacles.draw(screen)
 
         pygame.display.flip()
         time = clock.tick(fps)
         dt = time/1000
-
-        score += dt * SCORE_MULTIPLIER
+        if not game_over:
+            score += dt * SCORE_MULTIPLIER
 
 
 if __name__ == "__main__":
