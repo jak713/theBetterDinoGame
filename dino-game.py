@@ -2,7 +2,7 @@ from sys import exit
 import pygame
 from player import Player
 from obstaclefield import ObstacleField
-from constants import BACKGROUND_COLOUR, GROUND_COLOUR, GROUND_SIZE, OBSTACLE_COLOUR, SCREEN_SIZE, SCORE_MULTIPLIER
+from constants import BACKGROUND_COLOUR, GROUND_COLOUR, GROUND_SIZE, SCREEN_SIZE, SCORE_MULTIPLIER
 
 
 def main() -> None:
@@ -38,8 +38,8 @@ def main() -> None:
                 print(score)
                 pygame.quit()
                 exit()
-        if not game_over:
 
+        if not game_over:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
                     print(score)
@@ -57,9 +57,9 @@ def main() -> None:
         pygame.display.flip()
         time = clock.tick(fps)
         dt = time/1000
+        
         if not game_over:
             score += dt * SCORE_MULTIPLIER
-
 
 if __name__ == "__main__":
     main()
