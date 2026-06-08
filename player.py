@@ -1,11 +1,12 @@
 import pygame
+from constants import PLAYER_COLOUR, PLAYER_SIZE
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, username):
         super().__init__()
         # player, rectangle size
-        self.image = pygame.Surface((50, 50))
-        self.image.fill("#EB679E")
+        self.image = pygame.Surface(PLAYER_SIZE)
+        self.image.fill(PLAYER_COLOUR)
         # placement of player, rectangle
         self.rect = self.image.get_rect(center=(80, 250))
         self.gravity = 0
