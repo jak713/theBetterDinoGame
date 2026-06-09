@@ -1,10 +1,56 @@
 from sys import exit
+
 import pygame
-from constants import (BACKGROUND_COLOUR, GROUND_COLOUR, GROUND_SIZE,
-                       PLAYER_USERNAME_BACKGROUND, FONT,
-                       SCORE_MULTIPLIER, SCREEN_SIZE)
+
+from button import Button
+from constants import (
+    BACKGROUND_COLOUR,
+    FONT,
+    GROUND_COLOUR,
+    GROUND_SIZE,
+    PLAYER_USERNAME_BACKGROUND,
+    SCORE_MULTIPLIER,
+    SCREEN_SIZE,
+)
+from gamestate import GameState
 from obstaclefield import ObstacleField
 from player import Player
+
+
+def title_screen(screen):
+    start_btn = Button(
+        center_position=(400, 200),
+        font_size=30,
+        bg_rgb=BACKGROUND_COLOUR,
+        text_rgb=GROUND_COLOUR,
+        text="Start",
+        action=GameState.NEWGAME,
+    )
+    quit_btn = Button(
+        center_position=(400, 250),
+        font_size=30,
+        bg_rgb=BACKGROUND_COLOUR,
+        text_rgb=GROUND_COLOUR,
+        text="Quit",
+        action=GameState.QUIT,
+    )
+
+    buttons = [start_btn, quit_btn]
+
+    while True:
+        mouse_up = False
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                mouse_up = True
+        screen.fill(BACKGROUND_COLOUR)
+
+        for button in buttons:
+            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            if ui_action is not None:
+                return ui_action
+            button.draw(screen)
+
+        pygame.display.flip()
 
 
 def main() -> None:
@@ -33,7 +79,7 @@ def main() -> None:
     field = ObstacleField(obstacles)
 
     score = 0
-    game_over = False
+    game_state = GameState.TITLE
 
     while True:
         for event in pygame.event.get():
@@ -42,11 +88,18 @@ def main() -> None:
                 pygame.quit()
                 exit()
 
-        if not game_over:
+        if game_state == GameState.TITLE:
+            game_state = title_screen(screen)
+
+        if game_state == GameState.QUIT:
+            pygame.quit()
+            return
+
+        if game_state == GameState.NEWGAME:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
                     print(score)
-                    game_over = True
+                    game_state = 1
 
             obstacles.update(dt)
             field.update(dt)
@@ -63,8 +116,7 @@ def main() -> None:
         time = clock.tick(fps)
         dt = time / 1000
 
-        if not game_over:
-            score += dt * SCORE_MULTIPLIER
+        score += dt * SCORE_MULTIPLIER
 
 
 if __name__ == "__main__":
