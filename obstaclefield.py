@@ -1,7 +1,8 @@
 import random
 import pygame
-from obstacle import Obstacle
 from constants import OBSTACLE_SPAWN_POINT, SPAWN_RATE
+from obstacle import Obstacle
+
 
 class ObstacleField(pygame.sprite.Sprite):
     

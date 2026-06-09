@@ -1,6 +1,7 @@
 import pygame
 from constants import OBSTACLE_COLOUR, OBSTACLE_SIZE, OBSTACLE_SPEED_MULT
 
+
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, scale, spawn_point):
         super().__init__()
