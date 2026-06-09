@@ -1,7 +1,7 @@
 from sys import exit
 import pygame
 from constants import (BACKGROUND_COLOUR, GROUND_COLOUR, GROUND_SIZE,
-                       PLAYER_USERNAME_BACKGROUND, PLAYER_USERNAME_FONT,
+                       PLAYER_USERNAME_BACKGROUND, FONT,
                        SCORE_MULTIPLIER, SCREEN_SIZE)
 from obstaclefield import ObstacleField
 from player import Player
@@ -26,7 +26,7 @@ def main() -> None:
     ground.fill(GROUND_COLOUR)
 
     player = pygame.sprite.GroupSingle()
-    text_font = pygame.font.SysFont(PLAYER_USERNAME_FONT, 25)
+    text_font = pygame.font.SysFont(FONT, 25)
     player.add(Player(text_font, " player-test "))
 
     obstacles = pygame.sprite.Group()
