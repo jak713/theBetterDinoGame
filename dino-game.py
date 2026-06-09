@@ -1,7 +1,8 @@
 from sys import exit
 import pygame
 from constants import (BACKGROUND_COLOUR, GROUND_COLOUR, GROUND_SIZE,
-                       PLAYER_USERNAME_FONT, SCORE_MULTIPLIER, SCREEN_SIZE)
+                       PLAYER_USERNAME_BACKGROUND, PLAYER_USERNAME_FONT,
+                       SCORE_MULTIPLIER, SCREEN_SIZE)
 from obstaclefield import ObstacleField
 from player import Player
 
@@ -12,7 +13,7 @@ def main() -> None:
 
     screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption("Dino Game")
-    
+
     clock = pygame.time.Clock()
     fps = 60
     dt = 0
@@ -26,7 +27,7 @@ def main() -> None:
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(PLAYER_USERNAME_FONT, 25)
-    player.add(Player(text_font, "player-test"))
+    player.add(Player(text_font, " player-test "))
 
     obstacles = pygame.sprite.Group()
     field = ObstacleField(obstacles)
@@ -46,7 +47,7 @@ def main() -> None:
                 if o.rect.colliderect(player.sprite.rect):
                     print(score)
                     game_over = True
-            
+
             obstacles.update(dt)
             field.update(dt)
             player.update()
@@ -54,15 +55,17 @@ def main() -> None:
         screen.blit(background, (0, 0))
         screen.blit(ground, ground_rect)
         player.draw(screen)
+        pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
         screen.blit(player.sprite.name, player.sprite.name_rect)
         obstacles.draw(screen)
 
         pygame.display.flip()
         time = clock.tick(fps)
-        dt = time/1000
-        
+        dt = time / 1000
+
         if not game_over:
             score += dt * SCORE_MULTIPLIER
+
 
 if __name__ == "__main__":
     main()
