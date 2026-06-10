@@ -59,7 +59,6 @@ def title_screen(screen: pygame.Surface) -> GameState:
             if ui_action is not None:
                 return ui_action
             button.draw(screen)
-
         pygame.display.flip()
 
 
@@ -95,7 +94,6 @@ def main() -> None:
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print(score)
                 pygame.quit()
                 exit()
 
@@ -114,13 +112,11 @@ def main() -> None:
         if game_state == GameState.NEWGAME:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
-                    print(score)
                     game_state = GameState.TITLE
 
             obstacles.update(dt)
             field.update(dt)
             player.update()
-
             score += dt * SCORE_MULTIPLIER
 
         screen.blit(background, (0, 0))
@@ -134,7 +130,8 @@ def main() -> None:
 
         pygame.display.flip()
         time = clock.tick(fps)
-        dt = time / 1000
+        # dt limited to 0.1 during blocked screens (title screen)
+        dt = min(time/1000,0.1)
 
 
 
