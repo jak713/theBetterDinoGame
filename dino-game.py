@@ -17,6 +17,14 @@ from obstaclefield import ObstacleField
 from player import Player
 
 
+def display_score(screen, start_time):
+    font = pygame.font.SysFont("sans-serif", 25)
+    current_time = int(pygame.time.get_ticks() / 1000) - start_time
+    score_surface = font.render(f'Score: {current_time}', False, (64, 64, 64))
+    score_rect = score_surface.get_rect(topleft=(10, 10))
+    screen.blit(score_surface, score_rect)
+
+
 def title_screen(screen):
     start_btn = Button(
         center_position=(400, 200),
@@ -40,6 +48,9 @@ def title_screen(screen):
     while True:
         mouse_up = False
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouse_up = True
         screen.fill(BACKGROUND_COLOUR)
@@ -53,6 +64,7 @@ def title_screen(screen):
         pygame.display.flip()
 
 
+
 def main() -> None:
     pygame.init()
     pygame.font.init()
@@ -63,6 +75,7 @@ def main() -> None:
     clock = pygame.time.Clock()
     fps = 60
     dt = 0
+    start_time = int(pygame.time.get_ticks() / 1000)
 
     background = pygame.Surface(SCREEN_SIZE)
     background.fill(BACKGROUND_COLOUR)
@@ -90,6 +103,12 @@ def main() -> None:
 
         if game_state == GameState.TITLE:
             game_state = title_screen(screen)
+            #resetting the score back to 0 once the starts over again
+            if game_state == GameState.NEWGAME:
+                score = 0
+                start_time = int(pygame.time.get_ticks()/1000)
+                #starts the obstacles from the beginning/fresh
+                obstacles.empty()
 
         if game_state == GameState.QUIT:
             pygame.quit()
@@ -99,11 +118,13 @@ def main() -> None:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
                     print(score)
-                    game_state = 1
+                    game_state = GameState.TITLE
 
             obstacles.update(dt)
             field.update(dt)
             player.update()
+
+            score += dt * SCORE_MULTIPLIER
 
         screen.blit(background, (0, 0))
         screen.blit(ground, ground_rect)
@@ -111,12 +132,12 @@ def main() -> None:
         pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
         screen.blit(player.sprite.name, player.sprite.name_rect)
         obstacles.draw(screen)
+        display_score(screen, start_time)
 
         pygame.display.flip()
         time = clock.tick(fps)
         dt = time / 1000
 
-        score += dt * SCORE_MULTIPLIER
 
 
 if __name__ == "__main__":
