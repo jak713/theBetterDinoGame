@@ -11,6 +11,9 @@ from constants import (
     PLAYER_USERNAME_BACKGROUND,
     SCORE_MULTIPLIER,
     SCREEN_SIZE,
+    PROMPT_FONT_SIZE,
+    SCORE_FONT_SIZE,
+    PLAYER_TEXT_FONT_SIZE
 )
 from gamestate import GameState
 from obstaclefield import ObstacleField
@@ -18,7 +21,7 @@ from player import Player
 
 
 def display_score(screen:pygame.Surface, score:float) -> None:
-    font = pygame.font.SysFont("sans-serif", 25)
+    font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
     score_surface = font.render(f'Score: {int(score)}', False, (64, 64, 64))
     score_rect = score_surface.get_rect(topleft=(10, 10))
     screen.blit(score_surface, score_rect)
@@ -103,7 +106,7 @@ def main() -> None:
     
 
     player = pygame.sprite.GroupSingle()
-    text_font = pygame.font.SysFont(FONT, 25)
+    text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
     player.add(Player(text_font, " player-test "))
 
     obstacles = pygame.sprite.Group()
