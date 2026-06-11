@@ -34,22 +34,37 @@ def title_screen(screen: pygame.Surface) -> GameState:
         action=GameState.NEWGAME,
     )
     quit_btn = Button(
-        center_position=(400, 250),
+        center_position=(400, 300),
         font_size=30,
         bg_rgb=BACKGROUND_COLOUR,
         text_rgb=GROUND_COLOUR,
         text="Quit",
         action=GameState.QUIT,
     )
-
-    buttons = [start_btn, quit_btn]
-
+    leaderboard_btn = Button(
+        center_position=(400, 250),
+        font_size=30,
+        bg_rgb=BACKGROUND_COLOUR,
+        text_rgb=GROUND_COLOUR,
+        text="Leaderboard",
+        action=GameState.LEADERBOARD,
+    )
+    username_input = ""
+    buttons = [start_btn, quit_btn, leaderboard_btn]
+    text_font = pygame.font.SysFont(FONT, 25)
     while True:
         mouse_up = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    username_input = username_input[:-1]
+                else:
+                    username_input += event.unicode
+
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouse_up = True
         screen.fill(BACKGROUND_COLOUR)
@@ -59,6 +74,11 @@ def title_screen(screen: pygame.Surface) -> GameState:
             if ui_action is not None:
                 return ui_action
             button.draw(screen)
+
+        input_rect = pygame.Rect((200, 120), (400, 50))
+        pygame.draw.rect(screen, GROUND_COLOUR, input_rect, 2)
+        input_surface = text_font.render(username_input, True, GROUND_COLOUR)
+        screen.blit(input_surface, input_surface.get_rect(center=(400, 150)))
         pygame.display.flip()
 
 
@@ -80,6 +100,7 @@ def main() -> None:
     ground = pygame.Surface(GROUND_SIZE)
     ground_rect = ground.get_rect(bottomleft=(0, 400))
     ground.fill(GROUND_COLOUR)
+    
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, 25)
@@ -97,6 +118,7 @@ def main() -> None:
                 pygame.quit()
                 exit()
 
+           
         if game_state == GameState.TITLE:
             game_state = title_screen(screen)
             #resetting the score back to 0 once the starts over again
@@ -104,7 +126,7 @@ def main() -> None:
                 score = 0
                 #starts the obstacles from the beginning/fresh
                 obstacles.empty()
-
+                
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -119,20 +141,27 @@ def main() -> None:
             player.update()
             score += dt * SCORE_MULTIPLIER
 
-        screen.blit(background, (0, 0))
-        screen.blit(ground, ground_rect)
-        player.draw(screen)
-        pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
-        screen.blit(player.sprite.name, player.sprite.name_rect)
-        obstacles.draw(screen)
+            screen.blit(background, (0, 0))
+            screen.blit(ground, ground_rect)
+            player.draw(screen)
+            pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
+            screen.blit(player.sprite.name, player.sprite.name_rect)
+            obstacles.draw(screen)
 
-        display_score(screen, score)
+            display_score(screen, score)
 
-        pygame.display.flip()
-        time = clock.tick(fps)
-        # dt limited to 0.1 during blocked screens (title screen)
-        dt = min(time/1000,0.1)
+            pygame.display.flip()
+            time = clock.tick(fps)
+            # dt limited to 0.1 during blocked screens (title screen)
+            dt = min(time/1000,0.1)
 
+        if game_state == GameState.LEADERBOARD:
+            screen.blit(background, (0, 0))
+            leaderboard_font = pygame.font.SysFont(FONT, 40)
+            leaderboard_message = leaderboard_font.render('Leaderboard', False, GROUND_COLOUR)
+            leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50)) 
+            screen.blit(leaderboard_message, leaderboard_message_rect)
+            pygame.display.flip()
 
 
 if __name__ == "__main__":
