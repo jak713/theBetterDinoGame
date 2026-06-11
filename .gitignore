@@ -11,3 +11,5 @@ wheels/
 .DS_Store
 # Virtual environments
 .venv
+# Project configuration
+config.py
