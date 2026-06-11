@@ -64,7 +64,24 @@ def title_screen(screen: pygame.Surface) -> GameState:
             button.draw(screen)
         pygame.display.flip()
 
-
+def game_over(screen: pygame.Surface) -> GameState:
+    background = screen.copy()
+    font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE)
+    prompt = font.render("PRESS SPACE TO CONTINUE", False, (64, 64, 64))
+    prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0]/2, SCREEN_SIZE[1]/2))
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+        keys = pygame.key.get_pressed()
+        if (keys[pygame.K_UP] or keys[pygame.K_SPACE]):
+            return GameState.TITLE
+        
+        screen.blit(background, (0, 0))  
+        if pygame.time.get_ticks() // 500 % 2 == 0: # changes every half a second
+            screen.blit(prompt, prompt_rect)
+        pygame.display.flip()
 
 def main() -> None:
     pygame.init()
@@ -115,7 +132,7 @@ def main() -> None:
         if game_state == GameState.NEWGAME:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
-                    game_state = GameState.TITLE
+                    game_state = game_over(screen)
 
             obstacles.update(dt)
             field.update(dt)
