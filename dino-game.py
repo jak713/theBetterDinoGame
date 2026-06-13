@@ -5,10 +5,12 @@ import pygame
 from button import Button
 from constants import (
     BACKGROUND_COLOUR,
+    BUTTON_FONT_SIZE,
     FONT,
     GROUND_COLOUR,
     GROUND_SIZE,
     PLAYER_USERNAME_BACKGROUND,
+    RETURN_MENU_BUTTON_FONT_SIZE,
     SCORE_MULTIPLIER,
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
@@ -30,7 +32,7 @@ def display_score(screen: pygame.Surface, score: float) -> None:
 def title_screen(screen: pygame.Surface) -> GameState:
     start_btn = Button(
         center_position=(400, 200),
-        font_size=30,
+        font_size=BUTTON_FONT_SIZE,
         bg_rgb=BACKGROUND_COLOUR,
         text_rgb=GROUND_COLOUR,
         text="Start",
@@ -38,7 +40,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
     )
     quit_btn = Button(
         center_position=(400, 300),
-        font_size=30,
+        font_size=BUTTON_FONT_SIZE,
         bg_rgb=BACKGROUND_COLOUR,
         text_rgb=GROUND_COLOUR,
         text="Quit",
@@ -46,7 +48,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
     )
     leaderboard_btn = Button(
         center_position=(400, 250),
-        font_size=30,
+        font_size=BUTTON_FONT_SIZE,
         bg_rgb=BACKGROUND_COLOUR,
         text_rgb=GROUND_COLOUR,
         text="Leaderboard",
@@ -89,7 +91,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
 def leaderboard(screen: pygame.Surface) -> GameState:
     return_btn = Button(
         center_position=(200, 370),
-        font_size=25,
+        font_size=RETURN_MENU_BUTTON_FONT_SIZE,
         bg_rgb=BACKGROUND_COLOUR,
         text_rgb=GROUND_COLOUR,
         text="Return to main menu",
