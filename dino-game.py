@@ -13,16 +13,16 @@ from constants import (
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
     SCORE_FONT_SIZE,
-    PLAYER_TEXT_FONT_SIZE
+    PLAYER_TEXT_FONT_SIZE,
 )
 from gamestate import GameState
 from obstaclefield import ObstacleField
 from player import Player
 
 
-def display_score(screen:pygame.Surface, score:float) -> None:
+def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
-    score_surface = font.render(f'Score: {int(score)}', False, (64, 64, 64))
+    score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
     score_rect = score_surface.get_rect(topleft=(10, 10))
     screen.blit(score_surface, score_rect)
 
@@ -62,7 +62,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-                
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     username_input = username_input[:-1]
@@ -102,12 +102,14 @@ def leaderboard(screen: pygame.Surface) -> GameState:
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouse_up = True
         screen.fill(BACKGROUND_COLOUR)
-        
+
         leaderboard_font = pygame.font.SysFont(FONT, 40)
-        leaderboard_message = leaderboard_font.render('Leaderboard', False, GROUND_COLOUR)
-        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50)) 
+        leaderboard_message = leaderboard_font.render(
+            "Leaderboard", False, GROUND_COLOUR
+        )
+        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50))
         screen.blit(leaderboard_message, leaderboard_message_rect)
-        
+
         ui_action = return_btn.update(pygame.mouse.get_pos(), mouse_up)
         if ui_action is not None:
             return ui_action
@@ -115,24 +117,26 @@ def leaderboard(screen: pygame.Surface) -> GameState:
 
         pygame.display.flip()
 
+
 def game_over(screen: pygame.Surface) -> GameState:
     background = screen.copy()
     font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE)
     prompt = font.render("PRESS SPACE TO CONTINUE", False, (64, 64, 64))
-    prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0]/2, SCREEN_SIZE[1]/2))
+    prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_UP] or keys[pygame.K_SPACE]):
+        if keys[pygame.K_UP] or keys[pygame.K_SPACE]:
             return GameState.TITLE
-        
-        screen.blit(background, (0, 0))  
-        if pygame.time.get_ticks() // 500 % 2 == 0: # changes every half a second
+
+        screen.blit(background, (0, 0))
+        if pygame.time.get_ticks() // 500 % 2 == 0:  # changes every half a second
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()
+
 
 def main() -> None:
     pygame.init()
@@ -151,7 +155,6 @@ def main() -> None:
     ground = pygame.Surface(GROUND_SIZE)
     ground_rect = ground.get_rect(bottomleft=(0, 400))
     ground.fill(GROUND_COLOUR)
-    
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
@@ -169,15 +172,14 @@ def main() -> None:
                 pygame.quit()
                 exit()
 
-           
         if game_state == GameState.TITLE:
             game_state = title_screen(screen)
-            #resetting the score back to 0 once the starts over again
+            # resetting the score back to 0 once the starts over again
             if game_state == GameState.NEWGAME:
                 score = 0
-                #starts the obstacles from the beginning/fresh
+                # starts the obstacles from the beginning/fresh
                 obstacles.empty()
-                
+
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -195,7 +197,9 @@ def main() -> None:
             screen.blit(background, (0, 0))
             screen.blit(ground, ground_rect)
             player.draw(screen)
-            pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
+            pygame.draw.rect(
+                screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect
+            )
             screen.blit(player.sprite.name, player.sprite.name_rect)
             obstacles.draw(screen)
 
@@ -204,7 +208,7 @@ def main() -> None:
             pygame.display.flip()
             time = clock.tick(fps)
             # dt limited to 0.1 during blocked screens (title screen)
-            dt = min(time/1000,0.1)
+            dt = min(time / 1000, 0.1)
 
         if game_state == GameState.LEADERBOARD:
             game_state = leaderboard(screen)
