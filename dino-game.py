@@ -52,6 +52,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
         text="Leaderboard",
         action=GameState.LEADERBOARD,
     )
+
     username_input = ""
     buttons = [start_btn, quit_btn, leaderboard_btn]
     text_font = pygame.font.SysFont(FONT, 25)
@@ -82,6 +83,36 @@ def title_screen(screen: pygame.Surface) -> GameState:
         pygame.draw.rect(screen, GROUND_COLOUR, input_rect, 2)
         input_surface = text_font.render(username_input, True, GROUND_COLOUR)
         screen.blit(input_surface, input_surface.get_rect(center=(400, 150)))
+        pygame.display.flip()
+
+
+def leaderboard(screen: pygame.Surface) -> GameState:
+    return_btn = Button(
+        center_position=(200, 370),
+        font_size=25,
+        bg_rgb=BACKGROUND_COLOUR,
+        text_rgb=GROUND_COLOUR,
+        text="Return to main menu",
+        action=GameState.TITLE,
+    )
+
+    while True:
+        mouse_up = False
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                mouse_up = True
+        screen.fill(BACKGROUND_COLOUR)
+        
+        leaderboard_font = pygame.font.SysFont(FONT, 40)
+        leaderboard_message = leaderboard_font.render('Leaderboard', False, GROUND_COLOUR)
+        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50)) 
+        screen.blit(leaderboard_message, leaderboard_message_rect)
+        
+        ui_action = return_btn.update(pygame.mouse.get_pos(), mouse_up)
+        if ui_action is not None:
+            return ui_action
+        return_btn.draw(screen)
+
         pygame.display.flip()
 
 def game_over(screen: pygame.Surface) -> GameState:
@@ -176,12 +207,7 @@ def main() -> None:
             dt = min(time/1000,0.1)
 
         if game_state == GameState.LEADERBOARD:
-            screen.blit(background, (0, 0))
-            leaderboard_font = pygame.font.SysFont(FONT, 40)
-            leaderboard_message = leaderboard_font.render('Leaderboard', False, GROUND_COLOUR)
-            leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50)) 
-            screen.blit(leaderboard_message, leaderboard_message_rect)
-            pygame.display.flip()
+            game_state = leaderboard(screen)
 
 
 if __name__ == "__main__":
