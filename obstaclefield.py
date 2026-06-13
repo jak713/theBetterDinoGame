@@ -5,7 +5,7 @@ from obstacle import Obstacle
 
 
 class ObstacleField(pygame.sprite.Sprite):
-    
+
     def __init__(self, group) -> None:
         super().__init__()
         self.spawn_timer = 0.0
@@ -21,6 +21,5 @@ class ObstacleField(pygame.sprite.Sprite):
         if self.spawn_timer > SPAWN_RATE:
             self.spawn_timer = 0
 
-            scale = random.choice([0.5,1,1.5])
+            scale = random.choice([0.5, 1, 1.5])
             self.spawn(scale, self.spawn_point)
-
