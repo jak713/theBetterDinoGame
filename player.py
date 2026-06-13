@@ -3,7 +3,7 @@ from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, font, username: str = "Player"):
+    def __init__(self, font, jump_fx: pygame.mixer.Sound, username: str = "Player"):
         super().__init__()
         # player, rectangle size
         self.image = pygame.Surface(PLAYER_SIZE)
@@ -15,12 +15,14 @@ class Player(pygame.sprite.Sprite):
         self.username = username
         self.name = self.font.render(self.username, True, PLAYER_COLOUR)
         self.name_rect = self.name.get_rect(midbottom=self.rect.midtop)
+        self.jump_fx = jump_fx
 
     # user input up-arrow for movement
     def player_input(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 250:
             self.gravity = GRAVITY
+            self.jump_fx.play()
 
     def apply_gravity(self):
         self.gravity += 1

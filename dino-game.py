@@ -118,10 +118,11 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         pygame.display.flip()
 
 
-def game_over(screen: pygame.Surface) -> GameState:
+def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameState:
     background = screen.copy()
     font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE)
     prompt = font.render("PRESS SPACE TO CONTINUE", False, (64, 64, 64))
+    game_over_fx.play()
     prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2))
     while True:
         for event in pygame.event.get():
@@ -142,6 +143,18 @@ def main() -> None:
     pygame.init()
     pygame.font.init()
 
+    pygame.mixer.pre_init(44100, -16, 2, 512)
+    pygame.mixer.init()
+
+    # load sound
+    pygame.mixer.music.load("audio/game-music.mp3")
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(-1, 0.0, 5000)
+    jump_fx = pygame.mixer.Sound("audio/jump.mp3")
+    jump_fx.set_volume(0.3)
+    game_over_fx = pygame.mixer.Sound("audio/game-over.mp3")
+    game_over_fx.set_volume(0.3)
+
     screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption("Dino Game")
 
@@ -158,7 +171,7 @@ def main() -> None:
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-    player.add(Player(text_font, " player-test "))
+    player.add(Player(text_font, jump_fx, " player-test "))
 
     obstacles = pygame.sprite.Group()
     field = ObstacleField(obstacles)
@@ -187,7 +200,7 @@ def main() -> None:
         if game_state == GameState.NEWGAME:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
-                    game_state = game_over(screen)
+                    game_state = game_over(screen, game_over_fx)
 
             obstacles.update(dt)
             field.update(dt)
