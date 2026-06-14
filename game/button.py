@@ -1,5 +1,5 @@
 import pygame
-from constants import FONT
+from game.constants import FONT
 
 
 def create_surface_with_text(text, font_size, text_rgb, bg_rgb):

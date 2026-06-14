@@ -2,8 +2,8 @@ from sys import exit
 
 import pygame
 
-from button import Button
-from constants import (
+from game.button import Button
+from game.constants import (
     BACKGROUND_COLOUR,
     BUTTON_FONT_SIZE,
     FONT,
@@ -18,9 +18,9 @@ from constants import (
     SCORE_FONT_SIZE,
     PLAYER_TEXT_FONT_SIZE,
 )
-from gamestate import GameState
-from obstaclefield import ObstacleField
-from player import Player
+from game.gamestate import GameState
+from game.obstaclefield import ObstacleField
+from game.player import Player
 
 
 def display_score(screen: pygame.Surface, score: float) -> None:
