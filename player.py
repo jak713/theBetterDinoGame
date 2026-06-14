@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.name_rect = self.name.get_rect(midbottom=self.rect.midtop)
         self.jump_fx = jump_fx
 
-    # user input up-arrow for movement
+    # user input up-arrow or space bar for movement
     def player_input(self):
         keys = pygame.key.get_pressed()
         if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 250:
@@ -31,7 +31,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = 250
 
     def update(self):
-
         self.player_input()
         self.apply_gravity()
         self.name_rect.midbottom = self.rect.midtop
