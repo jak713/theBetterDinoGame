@@ -146,6 +146,8 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()
 
+def update_score(score: float, dt: float, multiplier: int) -> float:
+    return score + dt * multiplier
 
 def main() -> None:
     pygame.init()
@@ -216,7 +218,7 @@ def main() -> None:
             obstacles.update(dt)
             field.update(dt)
             player.update()
-            score += dt * SCORE_MULTIPLIER
+            score = update_score(score, dt, SCORE_MULTIPLIER)
 
             screen.blit(background, (0, 0))
             screen.blit(ground, ground_rect)
