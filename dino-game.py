@@ -71,6 +71,7 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     username_input = username_input[:-1]
@@ -186,6 +187,8 @@ def main() -> None:
 
     score = 0
     game_state = GameState.TITLE
+
+    username = ''
 
     while True:
         for event in pygame.event.get():
