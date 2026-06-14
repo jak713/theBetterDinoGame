@@ -78,7 +78,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
         for button in buttons:
             ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
-                return ui_action
+                return ui_action, username_input
             button.draw(screen)
 
         input_rect = pygame.Rect((200, 120), (400, 50))
@@ -181,6 +181,8 @@ def main() -> None:
     score = 0
     game_state = GameState.TITLE
 
+    username = ''
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -188,12 +190,15 @@ def main() -> None:
                 exit()
 
         if game_state == GameState.TITLE:
-            game_state = title_screen(screen)
+            game_state,username = title_screen(screen)
             # resetting the score back to 0 once the starts over again
             if game_state == GameState.NEWGAME:
                 score = 0
                 # starts the obstacles from the beginning/fresh
                 obstacles.empty()
+
+                text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
+                player.add(Player(text_font, jump_fx,  username or "player"))
 
         if game_state == GameState.QUIT:
             pygame.quit()
