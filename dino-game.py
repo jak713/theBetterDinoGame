@@ -29,7 +29,14 @@ def display_score(screen: pygame.Surface, score: float) -> None:
     screen.blit(score_surface, score_rect)
 
 
-def title_screen(screen: pygame.Surface) -> GameState:
+def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
+    """
+    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen. 
+    Returns GameState or tuple[GameState, str] 
+        Start -> (GameState.NEWGAME, username_input)
+        Quit -> (GameState.QUIT, username_input)
+        Leaderboard -> (GameState.LEADERBOARD, username_input)
+    """
     start_btn = Button(
         center_position=(400, 200),
         font_size=BUTTON_FONT_SIZE,
@@ -77,7 +84,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
         for button in buttons:
             ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
-                return ui_action
+                return ui_action, username_input 
             button.draw(screen)
 
         input_rect = pygame.Rect((200, 120), (400, 50))
@@ -187,12 +194,15 @@ def main() -> None:
                 exit()
 
         if game_state == GameState.TITLE:
-            game_state = title_screen(screen)
+            game_state, username = title_screen(screen)
             # resetting the score back to 0 once the starts over again
             if game_state == GameState.NEWGAME:
                 score = 0
                 # starts the obstacles from the beginning/fresh
                 obstacles.empty()
+
+                text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
+                player.add(Player(text_font, jump_fx,  username if username else "player1"))
 
         if game_state == GameState.QUIT:
             pygame.quit()
