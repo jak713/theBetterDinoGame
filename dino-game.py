@@ -11,6 +11,7 @@ from constants import (
     GROUND_SIZE,
     PLAYER_USERNAME_BACKGROUND,
     RETURN_MENU_BUTTON_FONT_SIZE,
+    SCORE_COORDINATES,
     SCORE_MULTIPLIER,
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
@@ -25,7 +26,7 @@ from player import Player
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
     score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
-    score_rect = score_surface.get_rect(topleft=(10, 10))
+    score_rect = score_surface.get_rect(topleft=SCORE_COORDINATES)
     screen.blit(score_surface, score_rect)
 
 
