@@ -7,6 +7,7 @@ from constants import (
     BACKGROUND_COLOUR,
     BUTTON_FONT_SIZE,
     FONT,
+    FPS,
     GROUND_COLOUR,
     GROUND_SIZE,
     PLAYER_USERNAME_BACKGROUND,
@@ -149,6 +150,10 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
 def update_score(score: float, dt: float, multiplier: int) -> float:
     return score + dt * multiplier
 
+def clean_username(username: str) -> str:
+    username = username.strip()
+    return username if username else "player1"
+
 def main() -> None:
     pygame.init()
     pygame.font.init()
@@ -169,7 +174,7 @@ def main() -> None:
     pygame.display.set_caption("Dino Game")
 
     clock = pygame.time.Clock()
-    fps = 60
+    fps = FPS
     dt = 0
 
     background = pygame.Surface(SCREEN_SIZE)
@@ -180,9 +185,6 @@ def main() -> None:
     ground.fill(GROUND_COLOUR)
 
     player = pygame.sprite.GroupSingle()
-    text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-    player.add(Player(text_font, jump_fx, " player-test "))
-
     obstacles = pygame.sprite.Group()
     field = ObstacleField(obstacles)
 
@@ -204,7 +206,8 @@ def main() -> None:
                 obstacles.empty()
 
                 text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-                player.add(Player(text_font, jump_fx,  username if username else "player1"))
+                cleaned_username = clean_username(username)
+                player.add(Player(text_font, jump_fx,  cleaned_username))
 
         if game_state == GameState.QUIT:
             pygame.quit()
