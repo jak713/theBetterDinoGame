@@ -54,6 +54,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
         text="Leaderboard",
         action=GameState.LEADERBOARD,
     )
+
     username_input = ""
     buttons = [start_btn, quit_btn, leaderboard_btn]
     text_font = pygame.font.SysFont(FONT, 25)
@@ -168,7 +169,6 @@ def main() -> None:
     ground = pygame.Surface(GROUND_SIZE)
     ground_rect = ground.get_rect(bottomleft=(0, 400))
     ground.fill(GROUND_COLOUR)
-    
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
@@ -186,7 +186,6 @@ def main() -> None:
                 pygame.quit()
                 exit()
 
-           
         if game_state == GameState.TITLE:
             game_state = title_screen(screen)
             # resetting the score back to 0 once the starts over again
@@ -194,7 +193,7 @@ def main() -> None:
                 score = 0
                 # starts the obstacles from the beginning/fresh
                 obstacles.empty()
-                
+
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -212,7 +211,9 @@ def main() -> None:
             screen.blit(background, (0, 0))
             screen.blit(ground, ground_rect)
             player.draw(screen)
-            pygame.draw.rect(screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect)
+            pygame.draw.rect(
+                screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect
+            )
             screen.blit(player.sprite.name, player.sprite.name_rect)
             obstacles.draw(screen)
 
@@ -225,16 +226,7 @@ def main() -> None:
 
         if game_state == GameState.LEADERBOARD:
             game_state = leaderboard(screen)
-            time = clock.tick(fps)
-            dt = min(time/1000,0.1)
 
-        if game_state == GameState.LEADERBOARD:
-            screen.blit(background, (0, 0))
-            leaderboard_font = pygame.font.SysFont(FONT, 40)
-            leaderboard_message = leaderboard_font.render('Leaderboard', False, GROUND_COLOUR)
-            leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50)) 
-            screen.blit(leaderboard_message, leaderboard_message_rect)
-            pygame.display.flip()
 
 if __name__ == "__main__":
     main()
