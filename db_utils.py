@@ -34,6 +34,20 @@ class DatabaseManager:
         db.close()
         return game_run_id
 
+    def update_game_run(self, game_run_id: int, score: int) -> bool:
+        db = self.connect_db()
+        cursor = db.cursor()
+        cursor.execute(
+            "UPDATE game_runs SET score = %s, ended_at = CURRENT_TIMESTAMP "
+            "WHERE id = %s",
+            (score, game_run_id)
+        )
+        db.commit()
+        rows_affected = cursor.rowcount
+        cursor.close()
+        db.close()
+        return rows_affected > 0
+
     def fetch_leaderboard(self) -> list:
         db = self.connect_db()
         cursor = db.cursor()
@@ -47,7 +61,7 @@ class DatabaseManager:
         db.close()
         return results
 
-    def delete_game_run(self, game_run_id: int) -> None:
+    def delete_game_run(self, game_run_id: int) -> bool:
         db = self.connect_db()
         cursor = db.cursor()
         cursor.execute(
@@ -55,5 +69,7 @@ class DatabaseManager:
             (game_run_id,)
         )
         db.commit()
+        rows_affected = cursor.rowcount
         cursor.close()
         db.close()
+        return rows_affected > 0
