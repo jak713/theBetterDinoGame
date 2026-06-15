@@ -5,5 +5,5 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "",  # to update
-    "database": ""   # to update
+    "database": "",  # to update
 }
