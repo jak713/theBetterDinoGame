@@ -11,6 +11,7 @@ from constants import (
     GROUND_SIZE,
     PLAYER_USERNAME_BACKGROUND,
     RETURN_MENU_BUTTON_FONT_SIZE,
+    SCORE_COORDINATES,
     SCORE_MULTIPLIER,
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
@@ -25,11 +26,18 @@ from player import Player
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
     score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
-    score_rect = score_surface.get_rect(topleft=(10, 10))
+    score_rect = score_surface.get_rect(topleft=SCORE_COORDINATES)
     screen.blit(score_surface, score_rect)
 
 
-def title_screen(screen: pygame.Surface) -> GameState:
+def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
+    """
+    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen. 
+    Returns GameState or tuple[GameState, str] 
+        Start -> (GameState.NEWGAME, username_input)
+        Quit -> (GameState.QUIT, username_input)
+        Leaderboard -> (GameState.LEADERBOARD, username_input)
+    """
     start_btn = Button(
         center_position=(400, 200),
         font_size=BUTTON_FONT_SIZE,
@@ -78,7 +86,7 @@ def title_screen(screen: pygame.Surface) -> GameState:
         for button in buttons:
             ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
-                return ui_action, username_input
+                return ui_action, username_input 
             button.draw(screen)
 
         input_rect = pygame.Rect((200, 120), (400, 50))
@@ -190,7 +198,7 @@ def main() -> None:
                 exit()
 
         if game_state == GameState.TITLE:
-            game_state,username = title_screen(screen)
+            game_state, username = title_screen(screen)
             # resetting the score back to 0 once the starts over again
             if game_state == GameState.NEWGAME:
                 score = 0
@@ -198,7 +206,7 @@ def main() -> None:
                 obstacles.empty()
 
                 text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-                player.add(Player(text_font, jump_fx,  username or "player"))
+                player.add(Player(text_font, jump_fx,  username if username else "player1"))
 
         if game_state == GameState.QUIT:
             pygame.quit()
