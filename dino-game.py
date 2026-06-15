@@ -200,7 +200,6 @@ def main() -> None:
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-    player.add(Player(text_font, jump_fx, " player-test "))
 
     obstacles = pygame.sprite.Group()
     field = ObstacleField(obstacles)
