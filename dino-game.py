@@ -2,6 +2,9 @@ from sys import exit
 
 import pygame
 
+from api_client import fetch_leaderboard
+
+
 from button import Button
 from constants import (
     BACKGROUND_COLOUR,
@@ -32,8 +35,8 @@ def display_score(screen: pygame.Surface, score: float) -> None:
 
 def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
     """
-    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen. 
-    Returns GameState or tuple[GameState, str] 
+    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen.
+    Returns GameState or tuple[GameState, str]
         Start -> (GameState.NEWGAME, username_input)
         Quit -> (GameState.QUIT, username_input)
         Leaderboard -> (GameState.LEADERBOARD, username_input)
@@ -86,7 +89,7 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
         for button in buttons:
             ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
-                return ui_action, username_input 
+                return ui_action, username_input
             button.draw(screen)
 
         input_rect = pygame.Rect((200, 120), (400, 50))
@@ -106,6 +109,8 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         action=GameState.TITLE,
     )
 
+    leaderboard_data = fetch_leaderboard()
+
     while True:
         mouse_up = False
         for event in pygame.event.get():
@@ -115,10 +120,24 @@ def leaderboard(screen: pygame.Surface) -> GameState:
 
         leaderboard_font = pygame.font.SysFont(FONT, 40)
         leaderboard_message = leaderboard_font.render(
-            "Leaderboard", False, GROUND_COLOUR
+            "Leaderboard", True, GROUND_COLOUR
         )
-        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50))
+        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 20))
         screen.blit(leaderboard_message, leaderboard_message_rect)
+
+        font = pygame.font.SysFont(FONT, 20)
+        # Header
+        screen.blit(font.render("Rank", True, GROUND_COLOUR), (150, 50))
+        screen.blit(font.render("Username", True, GROUND_COLOUR), (300, 50))
+        screen.blit(font.render("Score", True, GROUND_COLOUR), (550, 50))
+
+        # Rows
+        y = 75
+        for rank, (username, score) in enumerate(leaderboard_data, start=1):
+            screen.blit(font.render(str(rank), True, GROUND_COLOUR), (150, y))
+            screen.blit(font.render(username, True, GROUND_COLOUR), (300, y))
+            screen.blit(font.render(str(score), True, GROUND_COLOUR), (550, y))
+            y += 29
 
         ui_action = return_btn.update(pygame.mouse.get_pos(), mouse_up)
         if ui_action is not None:
@@ -189,7 +208,7 @@ def main() -> None:
     score = 0
     game_state = GameState.TITLE
 
-    username = ''
+    username = ""
 
     while True:
         for event in pygame.event.get():
@@ -206,7 +225,9 @@ def main() -> None:
                 obstacles.empty()
 
                 text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-                player.add(Player(text_font, jump_fx,  username if username else "player1"))
+                player.add(
+                    Player(text_font, jump_fx, username if username else "player1")
+                )
 
         if game_state == GameState.QUIT:
             pygame.quit()
