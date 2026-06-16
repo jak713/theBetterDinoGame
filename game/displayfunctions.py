@@ -6,8 +6,9 @@ from game.constants import (
     BACKGROUND_COLOUR, 
     GROUND_COLOUR, 
     RETURN_MENU_BUTTON_FONT_SIZE,
+    SCORE_COORDINATES,
+    SCREEN_SIZE,
     PROMPT_FONT_SIZE,
-    SCREEN_SIZE
     ) 
 from game.button import Button
 from game.gamestate import GameState
@@ -15,7 +16,7 @@ from game.gamestate import GameState
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
     score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
-    score_rect = score_surface.get_rect(topleft=(10, 10))
+    score_rect = score_surface.get_rect(topleft=SCORE_COORDINATES)
     screen.blit(score_surface, score_rect)
 
 
@@ -61,6 +62,7 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     username_input = username_input[:-1]
@@ -135,3 +137,4 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
         if pygame.time.get_ticks() // 500 % 2 == 0:  # changes every half a second
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()
+
