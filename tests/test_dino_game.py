@@ -1,5 +1,5 @@
 import pytest
-from game.dinogame import clean_username 
+from dinogame import clean_username 
 
 class TestUtils:
     def test_clean_username_returns_player1(self):
