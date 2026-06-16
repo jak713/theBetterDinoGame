@@ -27,3 +27,9 @@ def update_game_run_api_client(game_run_id: int, score: int):
     updated_data = {"score": score}
     response = requests.put(f"{API_URL}/game_runs/{game_run_id}", json=updated_data)
     return response.json()
+
+
+# Delete - DELETE
+def delete_game_run_api_client(game_run_id: int):
+    response = requests.delete(f"{API_URL}/game_runs/{game_run_id}")
+    return response.json()
