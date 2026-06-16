@@ -2,7 +2,12 @@ from sys import exit
 
 import pygame
 
-from api_client import fetch_leaderboard
+from api_client import (
+    create_player_api_client,
+    create_game_run_api_client,
+    fetch_leaderboard_api_client,
+    update_game_run_api_client,
+)
 
 
 from button import Button
@@ -109,7 +114,7 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         action=GameState.TITLE,
     )
 
-    leaderboard_data = fetch_leaderboard()
+    leaderboard_data = fetch_leaderboard_api_client()
 
     while True:
         mouse_up = False
@@ -222,11 +227,17 @@ def main() -> None:
                 score = 0
                 # starts the obstacles from the beginning/fresh
                 obstacles.empty()
+                if not username.strip():
+                    username = "player1"
+
+                player_response = create_player_api_client(username)
+                player_id = player_response["player_id"]
+
+                game_run_response = create_game_run_api_client(player_id)
+                game_run_id = game_run_response["game_run_id"]
 
                 text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-                player.add(
-                    Player(text_font, jump_fx, username if username else "player1")
-                )
+                player.add(Player(text_font, jump_fx, username))
 
         if game_state == GameState.QUIT:
             pygame.quit()
@@ -235,6 +246,7 @@ def main() -> None:
         if game_state == GameState.NEWGAME:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
+                    update_game_run_api_client(game_run_id, int(score))
                     game_state = game_over(screen, game_over_fx)
 
             obstacles.update(dt)
