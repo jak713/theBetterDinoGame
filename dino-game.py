@@ -7,6 +7,7 @@ from api_client import (
     create_game_run_api_client,
     fetch_leaderboard_api_client,
     update_game_run_api_client,
+    delete_game_run_api_client
 )
 
 
@@ -38,9 +39,14 @@ def display_score(screen: pygame.Surface, score: float) -> None:
     screen.blit(score_surface, score_rect)
 
 
-def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
+def title_screen(
+        screen: pygame.Surface,
+        last_game_run_id: int,
+        delete_message_time: int
+) -> tuple[GameState, str]:
     """
     Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen.
+    If the player has completed a run, the Delete Last Run button is rendered to screen.
     Returns GameState or tuple[GameState, str]
         Start -> (GameState.NEWGAME, username_input)
         Quit -> (GameState.QUIT, username_input)
@@ -70,10 +76,23 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
         text="Leaderboard",
         action=GameState.LEADERBOARD,
     )
+    delete_btn = Button(
+        center_position=(400, 350),
+        font_size=BUTTON_FONT_SIZE,
+        bg_rgb=BACKGROUND_COLOUR,
+        text_rgb=GROUND_COLOUR,
+        text="Delete Last Run",
+        action=GameState.DELETE_RUN,
+    )
 
     username_input = ""
+
     buttons = [start_btn, quit_btn, leaderboard_btn]
+    if last_game_run_id is not None:
+        buttons.append(delete_btn)
+
     text_font = pygame.font.SysFont(FONT, 25)
+
     while True:
         mouse_up = False
         for event in pygame.event.get():
@@ -101,6 +120,17 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
         pygame.draw.rect(screen, GROUND_COLOUR, input_rect, 2)
         input_surface = text_font.render(username_input, True, GROUND_COLOUR)
         screen.blit(input_surface, input_surface.get_rect(center=(400, 150)))
+
+        # displays a delete confirmation message after the button is clicked.
+        # Message removed after 3 seconds have passed.
+        show_delete_message = False
+        if delete_message_time is not None:
+            if pygame.time.get_ticks() - delete_message_time < 3000:
+                show_delete_message = True
+        if show_delete_message:
+            message_surface = text_font.render("Last game run deleted", True, (255, 0, 0))
+            screen.blit( message_surface, message_surface.get_rect(center=(400, 80)))
+
         pygame.display.flip()
 
 
@@ -214,6 +244,9 @@ def main() -> None:
 
     username = ""
 
+    last_game_run_id = None
+    delete_message_time = None
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -221,7 +254,7 @@ def main() -> None:
                 exit()
 
         if game_state == GameState.TITLE:
-            game_state, username = title_screen(screen)
+            game_state, username = title_screen(screen, last_game_run_id, delete_message_time)
             # resetting the score back to 0 once the starts over again
             if game_state == GameState.NEWGAME:
                 score = 0
@@ -239,6 +272,12 @@ def main() -> None:
                 text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
                 player.add(Player(text_font, jump_fx, username))
 
+        if game_state == GameState.DELETE_RUN:
+            delete_game_run_api_client((last_game_run_id))
+            last_game_run_id = None
+            delete_message_time = pygame.time.get_ticks()
+            game_state = GameState.TITLE
+
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -247,6 +286,7 @@ def main() -> None:
             for o in obstacles:
                 if o.rect.colliderect(player.sprite.rect):
                     update_game_run_api_client(game_run_id, int(score))
+                    last_game_run_id = game_run_id
                     game_state = game_over(screen, game_over_fx)
 
             obstacles.update(dt)
