@@ -19,4 +19,4 @@ CREATE TABLE game_runs (
 
 
 SELECT * FROM players;
-SELECT * FROM game_ru
+SELECT * FROM game_runs;
