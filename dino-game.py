@@ -195,13 +195,13 @@ def main() -> None:
     clock = pygame.time.Clock()
     fps = 60
     dt = 0
+    
+    background = pygame.image.load("assets/sky1.png").convert()
+    background = pygame.transform.smoothscale(background, screen.get_size())
 
-    background = pygame.Surface(SCREEN_SIZE)
-    background.fill(BACKGROUND_COLOUR)
-
-    ground = pygame.Surface(GROUND_SIZE)
+    ground = pygame.image.load("assets/3.png").convert_alpha()
+    ground = pygame.transform.smoothscale(ground, GROUND_SIZE)
     ground_rect = ground.get_rect(bottomleft=(0, 400))
-    ground.fill(GROUND_COLOUR)
 
     player = pygame.sprite.GroupSingle()
     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
@@ -242,10 +242,9 @@ def main() -> None:
         if game_state == GameState.QUIT:
             pygame.quit()
             return
-
         if game_state == GameState.NEWGAME:
             for o in obstacles:
-                if o.rect.colliderect(player.sprite.rect):
+                if pygame.sprite.collide_mask(player.sprite, o):
                     update_game_run_api_client(game_run_id, int(score))
                     game_state = game_over(screen, game_over_fx)
 
