@@ -2,7 +2,7 @@ from sys import exit
 
 import pygame
 
-from game.constants import (
+from constants import (
     BACKGROUND_COLOUR,
     FONT,
     FPS,
@@ -13,10 +13,10 @@ from game.constants import (
     SCREEN_SIZE,
     PLAYER_TEXT_FONT_SIZE,
 )
-from game.gamestate import GameState
-from game.obstaclefield import ObstacleField
-from game.player import Player
-from game.displayfunctions import display_score, leaderboard, game_over, title_screen
+from gamestate import GameState
+from obstaclefield import ObstacleField
+from player import Player
+from displayfunctions import display_score, leaderboard, game_over, title_screen
 
 
 def update_score(score: float, dt: float, multiplier: int) -> float:

@@ -1,5 +1,5 @@
 import pygame
-from game.constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE
+from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE
 
 
 class Player(pygame.sprite.Sprite):

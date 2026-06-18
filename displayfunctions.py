@@ -1,5 +1,5 @@
 import pygame
-from game.constants import (
+from constants import (
     FONT,
     SCORE_FONT_SIZE, 
     BUTTON_FONT_SIZE, 
@@ -10,8 +10,8 @@ from game.constants import (
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
     ) 
-from game.button import Button
-from game.gamestate import GameState
+from button import Button
+from gamestate import GameState
 
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
