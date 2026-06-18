@@ -29,3 +29,43 @@ If using PyCharm, you may simply open the repository folder in PyCharm. PyCharm 
 3. Activate the virtual environment:
    * **macOS / Linux:** `source .venv/bin/activate`
    * **Windows (Command Prompt):** `.venv\Scripts\activate`
+
+
+## Database Setup
+1. Copy `config_template.py` and rename it to `config.py`
+2. Fill in your MySQL password and database name:
+```python
+   db_config = {
+       "host": "localhost",
+       "user": "root",
+       "password": "your_password_here",
+       "database": "dino_game"
+   }
+```
+3. Run the SQL schema to create the database and tables:
+```bash
+   mysql -u root -p < Pygame_DB.sql
+```
+
+## Running the Application
+Open two separate terminals and run:
+
+Terminal 1 — start the API:
+```bash
+uv run api.py
+```
+
+Terminal 2 — start the game:
+```bash
+uv run dino-game.py
+```
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/players` | Creates a new player with a username |
+| POST | `/game_runs` | Starts a new game run for a player |
+| PUT | `/game_runs/<id>` | Updates the score and end time of a game run |
+| GET | `/leaderboard` | Fetches the top 10 scores |
+| DELETE | `/game_runs/<id>` | Deletes a specific game run |
