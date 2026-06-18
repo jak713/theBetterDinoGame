@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
     # user input up-arrow or space bar for movement
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 250:
+        if (keys[pygame.K_UP] or keys[pygame.K_SPACE]) and self.rect.bottom >= 300:
             self.gravity = GRAVITY
             self.jump_fx.play()
 
