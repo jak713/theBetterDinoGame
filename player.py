@@ -1,5 +1,5 @@
 import pygame
-from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE, TREX
+from constants import GRAVITY, PLAYER_SIZE, TREX
 
 
 class Player(pygame.sprite.Sprite):
@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0
         self.font = font
         self.username = username
-        self.name = self.font.render(self.username, True, PLAYER_COLOUR)
+        self.name = self.font.render(self.username, True, (0,0,0)) # black
         self.name_rect = self.name.get_rect(midbottom=self.rect.midtop)
         self.jump_fx = jump_fx
 

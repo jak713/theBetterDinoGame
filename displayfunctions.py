@@ -9,6 +9,7 @@ from api_client import (
 from button import Button
 from constants import (
     FONT,
+    PLAYER_TEXT_FONT_SIZE,
     SCORE_FONT_SIZE, 
     BUTTON_FONT_SIZE, 
     BACKGROUND_COLOUR, 
@@ -160,5 +161,4 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
         if pygame.time.get_ticks() // 500 % 2 == 0:  # changes every half a second
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()
-
 
