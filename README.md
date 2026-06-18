@@ -71,4 +71,3 @@ uv run dino-game.py
 | PUT | `/game_runs/<id>` | Updates the score and end time of a game run |
 | GET | `/leaderboard` | Fetches the top 10 scores |
 | DELETE | `/game_runs/<id>` | Deletes a specific game run |
-

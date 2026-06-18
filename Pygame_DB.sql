@@ -16,3 +16,7 @@ CREATE TABLE game_runs (
     ended_at DATETIME,
     FOREIGN KEY (player_id) REFERENCES players(id)
 );
+
+
+SELECT * FROM players;
+SELECT * FROM game_runs;

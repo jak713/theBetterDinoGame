@@ -1,15 +1,17 @@
 import pygame
-from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE
+from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE, TREX
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, font, jump_fx: pygame.mixer.Sound, username: str = "Player"):
         super().__init__()
         # player, rectangle size
-        self.image = pygame.Surface(PLAYER_SIZE)
-        self.image.fill(PLAYER_COLOUR)
         # placement of player, rectangle
-        self.rect = self.image.get_rect(center=(80, 250))
+        self.image = pygame.image.load(TREX).convert_alpha()
+        self.image = pygame.transform.scale(self.image, PLAYER_SIZE)
+        self.rect = self.image.get_rect(center=(80, 300))
+        self.mask = pygame.mask.from_surface(self.image)
+
         self.gravity = 0
         self.font = font
         self.username = username
@@ -27,8 +29,9 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):
         self.gravity += 1
         self.rect.y += self.gravity
-        if self.rect.bottom >= 250:
-            self.rect.bottom = 250
+        if self.rect.bottom >= 300:
+            self.rect.bottom = 300
+
 
     def update(self):
         self.player_input()
