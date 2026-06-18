@@ -1,3 +1,5 @@
+from pathlib import Path
+
 SCREEN_SIZE = (800, 400)
 GROUND_SIZE = (800, 350)
 
@@ -29,3 +31,9 @@ BUTTON_FONT_SIZE = 30
 RETURN_MENU_BUTTON_FONT_SIZE = 25
 PLAYER_TEXT_FONT_SIZE = 15
 FONT = "courier-new"
+
+# asset paths
+SKY = Path("assets") / "noon.png"
+TREX = Path("assets") / "trex.png"
+GROUND = Path("assets") / "ground.png"
+TREE = Path("assets") / "tree.png"

@@ -1,5 +1,5 @@
 import pygame
-from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE
+from constants import GRAVITY, PLAYER_COLOUR, PLAYER_SIZE, TREX
 
 
 class Player(pygame.sprite.Sprite):
@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         # player, rectangle size
         # placement of player, rectangle
-        self.image = pygame.image.load("assets/trex1.png").convert_alpha()
+        self.image = pygame.image.load(TREX).convert_alpha()
         self.image = pygame.transform.scale(self.image, PLAYER_SIZE)
         self.rect = self.image.get_rect(center=(80, 300))
         self.mask = pygame.mask.from_surface(self.image)

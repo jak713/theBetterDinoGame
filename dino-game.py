@@ -25,6 +25,8 @@ from constants import (
     PROMPT_FONT_SIZE,
     SCORE_FONT_SIZE,
     PLAYER_TEXT_FONT_SIZE,
+    GROUND,
+    SKY
 )
 from gamestate import GameState
 from obstaclefield import ObstacleField
@@ -196,10 +198,10 @@ def main() -> None:
     fps = 60
     dt = 0
     
-    background = pygame.image.load("assets/sky1.png").convert()
+    background = pygame.image.load(SKY).convert()
     background = pygame.transform.smoothscale(background, screen.get_size())
 
-    ground = pygame.image.load("assets/3.png").convert_alpha()
+    ground = pygame.image.load(GROUND).convert_alpha()
     ground = pygame.transform.smoothscale(ground, GROUND_SIZE)
     ground_rect = ground.get_rect(bottomleft=(0, 400))
 
