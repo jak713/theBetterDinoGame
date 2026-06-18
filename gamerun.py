@@ -14,7 +14,8 @@ class GameRun:
     state: GameState = GameState.TITLE
 
     def update_score(self, dt: float, multiplier: int) -> None:
-        self.score += dt * multiplier
+        if self.is_active():
+            self.score += dt * multiplier
 
     def transition(self, new_state: GameState) -> None:
         self.state = new_state
