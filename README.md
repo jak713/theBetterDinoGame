@@ -11,6 +11,9 @@ Scores are saved automatically to a leaderboard so players can track and compare
 > [!IMPORTANT]
 >Remember to work on your individual branches. When pushing code and opening a PR remember to pull from `main` branch first. 
 
+# Dino Game (name WIP)
+
+
 ## Setup
 
 > **Note:** Pygame does not yet support Python 3.14+. This project uses Python 3.13.
@@ -37,7 +40,6 @@ If using PyCharm, you may simply open the repository folder in PyCharm. PyCharm 
 3. Activate the virtual environment:
    * **macOS / Linux:** `source .venv/bin/activate`
    * **Windows (Command Prompt):** `.venv\Scripts\activate`
-
 
 ## Database Setup
 1. Copy `config_template.py` and rename it to `config.py`
@@ -77,3 +79,4 @@ uv run dino-game.py
 | PUT | `/game_runs/<id>` | Updates the score and end time of a game run |
 | GET | `/leaderboard` | Fetches the top 10 scores |
 | DELETE | `/game_runs/<id>` | Deletes a specific game run |
+
