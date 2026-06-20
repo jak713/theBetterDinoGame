@@ -1,3 +1,11 @@
+# Dino Game
+
+## About
+
+A dinosaur-themed game built with Pygame, connected to a Flask API and MySQL database. 
+Players choose a unique username for the dinosaur and aim to jump over obstacles for as long as possible. 
+Scores are saved automatically to a leaderboard so players can track and compare their performances across sessions.
+
 ## Notes for Developers
 
 > [!IMPORTANT]
