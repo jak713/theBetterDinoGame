@@ -1,4 +1,4 @@
-# Dino Game
+# Dino Game (name WIP)
 
 ## About
 
@@ -10,8 +10,6 @@ Scores are saved automatically to a leaderboard so players can track and compare
 
 > [!IMPORTANT]
 >Remember to work on your individual branches. When pushing code and opening a PR remember to pull from `main` branch first. 
-
-# Dino Game (name WIP)
 
 
 ## Setup
