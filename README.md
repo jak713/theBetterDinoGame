@@ -35,11 +35,8 @@ If using PyCharm, you may simply open the repository folder in PyCharm. PyCharm 
    ```bash
    uv venv
    ```
-3. Activate the virtual environment:
-   * **macOS / Linux:** `source .venv/bin/activate`
-   * **Windows (Command Prompt):** `.venv\Scripts\activate`
-
-4. Installing Dependencies with uv
+   
+3. Installing Dependencies with uv
 
 After activating your virtual environment, install all project dependencies using:
    ```bash
