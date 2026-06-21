@@ -40,6 +40,7 @@ If using PyCharm, you may simply open the repository folder in PyCharm. PyCharm 
    * **Windows (Command Prompt):** `.venv\Scripts\activate`
 
 4. Installing Dependencies with uv
+
 After activating your virtual environment, install all project dependencies using:
    ```bash
    uv sync
