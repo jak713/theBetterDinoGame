@@ -86,7 +86,6 @@ uv run dino-game.py
 | GET | `/leaderboard` | Fetches the top 10 scores |
 | DELETE | `/game_runs/<id>` | Deletes a specific game run |
 
-
 ## Contributing
 
 1. Fork the repository
@@ -94,10 +93,6 @@ uv run dino-game.py
 3. Commit your changes (`git commit -m 'Add some [name-of-feature]'`)
 4. Push to the branch (`git push origin feature/[name-of-feature-branch]`)
 5. Open a Pull Request
-
-## License
-
-This project is open source and available for educational purposes.
 
 ## Credits
 
