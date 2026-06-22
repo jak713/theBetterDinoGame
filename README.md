@@ -21,6 +21,33 @@ You must have [uv](https://astral.sh) installed. If needed, you can install it v
 ```bash
 pip install uv
 ```
+### Project Structure
+``` Code
+.
+├── LICENSE
+├── .gitattributes
+├── .gitignore
+├── .python-version
+├── Pygame_DB.sql
+├── README.md
+├── api.py
+├── audio
+│   ├── game-music.mp3
+│   ├── game-over.mp3
+│   └── jump.mp3
+├── button.py
+├── config_template.py        # change to config.py and fill in template
+├── constants.py
+├── db_utils.py
+├── dino-game.py
+├── gamestate.py
+├── obstacle.py
+├── obstaclefield.py
+├── player.py
+├── pyproject.toml
+└── uv.lock
+```
+
 
 ### Virtual Environment & Project Dependencies Configuration
 1. Clone the repository and navigate into it:
