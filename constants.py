@@ -16,7 +16,7 @@ OBSTACLE_SIZE = (50, 50)
 OBSTACLE_COLOUR = "#8DA8A1"
 
 SPAWN_RATE = 2
-MIN_SPAWN_RATE = 0.5
+MIN_SPAWN_RATE = 0.75
 SPAWNRATE_SCALE = 0.001
 
 OBSTACLE_SPEED_MULT = 300
@@ -44,3 +44,6 @@ SKY = Path("assets") / "noon.png"
 TREX = Path("assets") / "trex.png"
 GROUND = Path("assets") / "ground.png"
 TREE = Path("assets") / "tree.png"
+
+# local scores path
+LOCAL_SCORES = "local_scores.json"

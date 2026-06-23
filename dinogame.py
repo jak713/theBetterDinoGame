@@ -1,4 +1,4 @@
-from sys import exit
+from sys import exception, exit
 
 import pygame
 
@@ -23,7 +23,6 @@ from displayfunctions import display_score, leaderboard, game_over, title_screen
 from api_client import (
     create_player_api_client,
     create_game_run_api_client,
-    fetch_leaderboard_api_client,
     update_game_run_api_client,
 )
 
@@ -70,7 +69,7 @@ def load_background(screen: pygame.Surface) -> tuple[pygame.Surface, pygame.Surf
         return background, ground, ground_rect
 
     except (FileNotFoundError, pygame.error) as e:
-        print(f"Assets not found! Resorting to colours... Details: {e}")
+        print(f"Assets not found! Resorting to colours... Error details: {e}")
         background = pygame.Surface(SCREEN_SIZE)
         background.fill(BACKGROUND_COLOUR)
 
@@ -116,12 +115,17 @@ def main() -> None:
                     player.empty()
 
                     cleaned_username = clean_username(username)
-                    player_response = create_player_api_client(cleaned_username)
-                    game_run_response = create_game_run_api_client(player_response["player_id"])
+                    try:
+                        player_response = create_player_api_client(cleaned_username)
+                        game_run_response = create_game_run_api_client(player_response["player_id"])
+                    except Exception as e:
+                        print(f"Server not found. Switching to offline... Error details: {e}")
+                        player_response = None
+                        game_run_response = None
 
                     run = GameRun(
-                        player_id=player_response["player_id"],
-                        game_run_id=game_run_response["game_run_id"],
+                        player_id=player_response["player_id"] if player_response else "offline",
+                        game_run_id=game_run_response["game_run_id"] if game_run_response else "offline",
                         username=cleaned_username,
                         state = game_state
                     )
@@ -136,7 +140,12 @@ def main() -> None:
         if run is not None and run.is_active():
             for o in obstacles:
                 if pygame.sprite.collide_mask(player.sprite, o):
-                    update_game_run_api_client(run.game_run_id, run.finalise())
+                    try:
+                        update_game_run_api_client(run.game_run_id, run.final_score())
+                    except Exception:
+                        pass
+
+                    run.save_to_file()
                     game_state = game_over(screen, game_over_fx)
                     run.transition(game_state)
 
