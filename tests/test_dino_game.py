@@ -39,12 +39,3 @@ class TestGameRun:
         run.update_score(0.1,SCORE_MULTIPLIER)
         assert run.final_score() > 0
 
-class TestObstacleField:
-    ...
-
-class TestObstacle:
-    ...
-
-class TestPlayer:
-    ...
-
