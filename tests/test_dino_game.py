@@ -37,7 +37,7 @@ class TestGameRun:
     def test_score_increases(self, run):
         run.transition(GameState.NEWGAME)
         run.update_score(0.1,SCORE_MULTIPLIER)
-        assert run.finalise() > 0
+        assert run.final_score() > 0
 
 class TestObstacleField:
     ...
