@@ -17,6 +17,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Create test config for testing API
+        run: cp config_template.py config.py
+
       - name: Install dependencies
         run: uv sync --locked --dev
 
