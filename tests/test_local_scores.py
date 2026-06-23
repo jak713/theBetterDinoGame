@@ -1,4 +1,4 @@
-from local_scores import merge_sort_scores, _merge
+from local_scores import merge_sort_scores, _merge, _get_scores
 
 class TestLocalScores:
     def test_merge_sort_empty_returns_empty_array(self):
@@ -38,4 +38,6 @@ class TestLocalScores:
         expected = [{"username":"test", "score":100}, {"username": "test", "score":99}]
         assert _merge(left, right) == expected
 
-
+    def test_get_scores_with_no_file(self):
+        scores = _get_scores("fake_file")
+        assert scores == [{}]

@@ -142,12 +142,18 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         pygame.display.flip()
 
 
-def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameState:
+def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound, top_score: list[dict]) -> GameState:
     background = screen.copy()
     font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE)
-    prompt = font.render("PRESS SPACE TO CONTINUE", False, (64, 64, 64))
+    prompt = font.render("PRESS SPACE TO CONTINUE", True, (64, 64, 64))
+    
+    smaller_font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE-8)
+    top_score_text = smaller_font.render(f"High Score: {top_score[0].get("score", "")} - {top_score[0].get("username","")}", True, (64, 64, 64))
+
     game_over_fx.play()
     prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2))
+    top_score_rect = top_score_text.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2 + 30))
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -158,6 +164,7 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
             return GameState.TITLE
 
         screen.blit(background, (0, 0))
+        screen.blit(top_score_text, top_score_rect)
         if pygame.time.get_ticks() // 500 % 2 == 0:  # changes every half a second
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()

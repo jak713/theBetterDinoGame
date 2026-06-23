@@ -1,10 +1,13 @@
 import json
 from constants import LOCAL_SCORES
 
-def get_scores() -> list[dict]:
-    with open(LOCAL_SCORES, 'r') as f:
-        scores = json.load(f)
-    return scores
+def _get_scores(file: str) -> list[dict]:
+    try:
+        with open(file, 'r') as f:
+            scores = json.load(f)
+        return scores
+    except FileNotFoundError:
+        return [{}]
 
 def _merge(left: list[dict], right: list[dict]) -> list[dict]:
     result = []
@@ -24,7 +27,7 @@ def _merge(left: list[dict], right: list[dict]) -> list[dict]:
     result.extend(right[j:])
     return result
 
-def merge_sort_scores(arr:list[dict]):
+def merge_sort_scores(arr:list[dict]) -> list[dict]:
     # base case: list has only one element (cannot be broken down further)
     if len(arr) <= 1:
         return arr
@@ -41,4 +44,7 @@ def merge_sort_scores(arr:list[dict]):
     # step 3: merge halves
     return _merge(left, right)
 
-
+def get_top_score() -> list[dict]:
+    scores = _get_scores(LOCAL_SCORES)
+    sorted_scores = merge_sort_scores(scores)
+    return sorted_scores[:1]

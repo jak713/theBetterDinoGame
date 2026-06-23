@@ -18,6 +18,7 @@ from gamestate import GameState
 from obstaclefield import ObstacleField
 from player import Player
 from gamerun import GameRun
+from local_scores import get_top_score
 from displayfunctions import display_score, leaderboard, game_over, title_screen
 
 from api_client import (
@@ -146,7 +147,8 @@ def main() -> None:
                         pass
 
                     run.save_to_file()
-                    game_state = game_over(screen, game_over_fx)
+                    top_three_scores = get_top_score()
+                    game_state = game_over(screen, game_over_fx, top_three_scores)
                     run.transition(game_state)
 
             obstacles.update(dt)
