@@ -1,4 +1,4 @@
-from sys import exception, exit
+from sys import exit
 
 import pygame
 
