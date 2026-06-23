@@ -23,7 +23,7 @@ from gamestate import GameState
 
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
-    score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
+    score_surface = font.render(f"Score: {int(score)}", True, (64, 64, 64))
     score_rect = score_surface.get_rect(topleft=SCORE_COORDINATES)
     screen.blit(score_surface, score_rect)
 
@@ -103,8 +103,10 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         text="Return to main menu",
         action=GameState.TITLE,
     )
-
-    leaderboard_data = fetch_leaderboard_api_client()
+    try:
+        leaderboard_data = fetch_leaderboard_api_client()
+    except Exception:
+        leaderboard_data = []
 
     while True:
         mouse_up = False
