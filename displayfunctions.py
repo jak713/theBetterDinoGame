@@ -1,39 +1,37 @@
-from sys import exit
-
 import pygame
+from api_client import (
+    create_player_api_client,
+    create_game_run_api_client,
+    fetch_leaderboard_api_client,
+    update_game_run_api_client,
+)
 
 from button import Button
 from constants import (
-    BACKGROUND_COLOUR,
-    BUTTON_FONT_SIZE,
     FONT,
-    GROUND_COLOUR,
-    GROUND_SIZE,
-    PLAYER_USERNAME_BACKGROUND,
+    PLAYER_TEXT_FONT_SIZE,
+    SCORE_FONT_SIZE, 
+    BUTTON_FONT_SIZE, 
+    BACKGROUND_COLOUR, 
+    GROUND_COLOUR, 
     RETURN_MENU_BUTTON_FONT_SIZE,
     SCORE_COORDINATES,
-    SCORE_MULTIPLIER,
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
-    SCORE_FONT_SIZE,
-    PLAYER_TEXT_FONT_SIZE,
 )
 from gamestate import GameState
-from obstaclefield import ObstacleField
-from player import Player
-
 
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)
-    score_surface = font.render(f"Score: {int(score)}", False, (64, 64, 64))
+    score_surface = font.render(f"Score: {int(score)}", True, (64, 64, 64))
     score_rect = score_surface.get_rect(topleft=SCORE_COORDINATES)
     screen.blit(score_surface, score_rect)
 
 
 def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
     """
-    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen. 
-    Returns GameState or tuple[GameState, str] 
+    Accepts screen as argument and renders Start/Quit/Leaderboard buttons to screen.
+    Returns GameState or tuple[GameState, str]
         Start -> (GameState.NEWGAME, username_input)
         Quit -> (GameState.QUIT, username_input)
         Leaderboard -> (GameState.LEADERBOARD, username_input)
@@ -86,7 +84,7 @@ def title_screen(screen: pygame.Surface) -> tuple[GameState, str]:
         for button in buttons:
             ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
             if ui_action is not None:
-                return ui_action, username_input 
+                return ui_action, username_input
             button.draw(screen)
 
         input_rect = pygame.Rect((200, 120), (400, 50))
@@ -105,6 +103,10 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         text="Return to main menu",
         action=GameState.TITLE,
     )
+    try:
+        leaderboard_data = fetch_leaderboard_api_client()
+    except Exception:
+        leaderboard_data = []
 
     while True:
         mouse_up = False
@@ -115,10 +117,24 @@ def leaderboard(screen: pygame.Surface) -> GameState:
 
         leaderboard_font = pygame.font.SysFont(FONT, 40)
         leaderboard_message = leaderboard_font.render(
-            "Leaderboard", False, GROUND_COLOUR
+            "Leaderboard", True, GROUND_COLOUR
         )
-        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 50))
+        leaderboard_message_rect = leaderboard_message.get_rect(center=(400, 20))
         screen.blit(leaderboard_message, leaderboard_message_rect)
+
+        font = pygame.font.SysFont(FONT, 20)
+        # Header
+        screen.blit(font.render("Rank", True, GROUND_COLOUR), (150, 50))
+        screen.blit(font.render("Username", True, GROUND_COLOUR), (300, 50))
+        screen.blit(font.render("Score", True, GROUND_COLOUR), (550, 50))
+
+        # Rows
+        y = 75
+        for rank, (username, score) in enumerate(leaderboard_data, start=1):
+            screen.blit(font.render(str(rank), True, GROUND_COLOUR), (150, y))
+            screen.blit(font.render(username, True, GROUND_COLOUR), (300, y))
+            screen.blit(font.render(str(score), True, GROUND_COLOUR), (550, y))
+            y += 29
 
         ui_action = return_btn.update(pygame.mouse.get_pos(), mouse_up)
         if ui_action is not None:
@@ -128,12 +144,18 @@ def leaderboard(screen: pygame.Surface) -> GameState:
         pygame.display.flip()
 
 
-def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameState:
+def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound, top_score: list[dict]) -> GameState:
     background = screen.copy()
     font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE)
-    prompt = font.render("PRESS SPACE TO CONTINUE", False, (64, 64, 64))
+    prompt = font.render("PRESS SPACE TO CONTINUE", True, (64, 64, 64))
+    
+    smaller_font = pygame.font.SysFont(FONT, PROMPT_FONT_SIZE-8)
+    top_score_text = smaller_font.render(f"High Score: {top_score[0].get("score", "")} - {top_score[0].get("username","")}", True, (64, 64, 64))
+
     game_over_fx.play()
     prompt_rect = prompt.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2))
+    top_score_rect = top_score_text.get_rect(center=(SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2 + 30))
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -144,103 +166,8 @@ def game_over(screen: pygame.Surface, game_over_fx: pygame.mixer.Sound) -> GameS
             return GameState.TITLE
 
         screen.blit(background, (0, 0))
+        screen.blit(top_score_text, top_score_rect)
         if pygame.time.get_ticks() // 500 % 2 == 0:  # changes every half a second
             screen.blit(prompt, prompt_rect)
         pygame.display.flip()
 
-
-def main() -> None:
-    pygame.init()
-    pygame.font.init()
-
-    pygame.mixer.pre_init(44100, -16, 2, 512)
-    pygame.mixer.init()
-
-    # load sound
-    pygame.mixer.music.load("audio/game-music.mp3")
-    pygame.mixer.music.set_volume(0.3)
-    pygame.mixer.music.play(-1, 0.0, 5000)
-    jump_fx = pygame.mixer.Sound("audio/jump.mp3")
-    jump_fx.set_volume(0.3)
-    game_over_fx = pygame.mixer.Sound("audio/game-over.mp3")
-    game_over_fx.set_volume(0.3)
-
-    screen = pygame.display.set_mode(SCREEN_SIZE)
-    pygame.display.set_caption("Dino Game")
-
-    clock = pygame.time.Clock()
-    fps = 60
-    dt = 0
-
-    background = pygame.Surface(SCREEN_SIZE)
-    background.fill(BACKGROUND_COLOUR)
-
-    ground = pygame.Surface(GROUND_SIZE)
-    ground_rect = ground.get_rect(bottomleft=(0, 400))
-    ground.fill(GROUND_COLOUR)
-
-    player = pygame.sprite.GroupSingle()
-    text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-    player.add(Player(text_font, jump_fx, " player-test "))
-
-    obstacles = pygame.sprite.Group()
-    field = ObstacleField(obstacles)
-
-    score = 0
-    game_state = GameState.TITLE
-
-    username = ''
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-
-        if game_state == GameState.TITLE:
-            game_state, username = title_screen(screen)
-            # resetting the score back to 0 once the starts over again
-            if game_state == GameState.NEWGAME:
-                score = 0
-                # starts the obstacles from the beginning/fresh
-                obstacles.empty()
-
-                text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
-                player.add(Player(text_font, jump_fx,  username if username else "player1"))
-
-        if game_state == GameState.QUIT:
-            pygame.quit()
-            return
-
-        if game_state == GameState.NEWGAME:
-            for o in obstacles:
-                if o.rect.colliderect(player.sprite.rect):
-                    game_state = game_over(screen, game_over_fx)
-
-            obstacles.update(dt)
-            field.update(dt)
-            player.update()
-            score += dt * SCORE_MULTIPLIER
-
-            screen.blit(background, (0, 0))
-            screen.blit(ground, ground_rect)
-            player.draw(screen)
-            pygame.draw.rect(
-                screen, PLAYER_USERNAME_BACKGROUND, player.sprite.name_rect
-            )
-            screen.blit(player.sprite.name, player.sprite.name_rect)
-            obstacles.draw(screen)
-
-            display_score(screen, score)
-
-            pygame.display.flip()
-            time = clock.tick(fps)
-            # dt limited to 0.1 during blocked screens (title screen)
-            dt = min(time / 1000, 0.1)
-
-        if game_state == GameState.LEADERBOARD:
-            game_state = leaderboard(screen)
-
-
-if __name__ == "__main__":
-    main()

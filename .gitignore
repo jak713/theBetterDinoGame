@@ -13,3 +13,5 @@ wheels/
 .venv
 # Project configuration
 config.py
+# local scores
+*.json
