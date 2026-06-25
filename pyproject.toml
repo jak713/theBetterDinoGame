@@ -10,3 +10,13 @@ dependencies = [
     "pygame>=2.6.1",
     "requests>=2.34.2",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.0",
+    "coverage>=7.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

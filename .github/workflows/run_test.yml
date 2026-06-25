@@ -1,0 +1,30 @@
+name: Run Unit Test via Pytest
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv and set Python ${{ matrix.python-version }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create test config for testing API
+        run: cp config_template.py config.py
+
+      - name: Install dependencies
+        run: uv sync --locked --dev
+
+      - name: Test with pytest
+        run: uv run coverage run -m pytest -v -s
+
+      - name: Generate Coverage Report
+        run: uv run coverage report -m

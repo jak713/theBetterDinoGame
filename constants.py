@@ -1,17 +1,26 @@
+from pathlib import Path
+
 SCREEN_SIZE = (800, 400)
 GROUND_SIZE = (800, 150)
+FPS = 60
 
-PLAYER_SIZE = (50, 50)
+SCREEN_SIZE = (800, 400)
+GROUND_SIZE = (800, 350)
+
+PLAYER_SIZE = (80, 70)
 PLAYER_COLOUR = "#EB679E"
-PLAYER_USERNAME_BACKGROUND = "#D5E7EE"
 FONT = "sans-serif"
 GRAVITY = -20
 
 OBSTACLE_SIZE = (50, 50)
 OBSTACLE_COLOUR = "#8DA8A1"
+
 SPAWN_RATE = 2
+MIN_SPAWN_RATE = 0.75
+SPAWNRATE_SCALE = 0.001
+
 OBSTACLE_SPEED_MULT = 300
-OBSTACLE_SPAWN_POINT = (800, 250)
+OBSTACLE_SPAWN_POINT = (800, 300)
 
 BACKGROUND_COLOUR = "#D5E7EE"
 GROUND_COLOUR = "#8DA8B1"
@@ -29,3 +38,12 @@ BUTTON_FONT_SIZE = 30
 RETURN_MENU_BUTTON_FONT_SIZE = 25
 PLAYER_TEXT_FONT_SIZE = 15
 FONT = "courier-new"
+
+# asset paths
+SKY = Path("assets") / "noon.png"
+TREX = Path("assets") / "trex.png"
+GROUND = Path("assets") / "ground.png"
+TREE = Path("assets") / "tree.png"
+
+# local scores path
+LOCAL_SCORES = "local_scores.json"
