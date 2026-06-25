@@ -138,7 +138,11 @@ def main() -> None:
 
 
         if game_state == GameState.DELETE_RUN:
-            delete_game_run_api_client((last_game_run_id))
+            try:
+                delete_game_run_api_client((last_game_run_id))
+            except Exception as e:
+                print(f"Server not found. Switching to offline... Error details: {e}")
+
             last_game_run_id = None
             delete_message_time = pygame.time.get_ticks()
             game_state = GameState.TITLE
