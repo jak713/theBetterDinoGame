@@ -24,7 +24,8 @@ from displayfunctions import display_score, leaderboard, game_over, title_screen
 from api_client import (
     create_player_api_client,
     create_game_run_api_client,
-    update_game_run_api_client,
+    update_game_run_api_client,    
+    delete_game_run_api_client
 )
 
 def clean_username(username: str) -> str:
@@ -101,7 +102,8 @@ def main() -> None:
     game_state = GameState.TITLE # Essentially keeps track of the screen
     
     run = None # Keeps track of the run
-
+    last_game_run_id = None
+    delete_message_time = None
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -109,7 +111,7 @@ def main() -> None:
                 exit()
 
             if game_state == GameState.TITLE:
-                game_state, username = title_screen(screen)
+                game_state, username = title_screen(screen, last_game_run_id, delete_message_time)
                 if game_state == GameState.NEWGAME:
                     # starts the obstacles from the beginning/fresh
                     obstacles.empty()
@@ -134,6 +136,13 @@ def main() -> None:
                     text_font = pygame.font.SysFont(FONT, PLAYER_TEXT_FONT_SIZE)
                     player.add(Player(text_font, jump_fx,  cleaned_username))
 
+
+        if game_state == GameState.DELETE_RUN:
+            delete_game_run_api_client((last_game_run_id))
+            last_game_run_id = None
+            delete_message_time = pygame.time.get_ticks()
+            game_state = GameState.TITLE
+
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -145,7 +154,8 @@ def main() -> None:
                         update_game_run_api_client(run.game_run_id, run.final_score())
                     except Exception:
                         pass
-
+                    
+                    last_game_run_id = run.game_run_id
                     run.save_to_file()
                     top_three_scores = get_top_score()
                     game_state = game_over(screen, game_over_fx, top_three_scores)
