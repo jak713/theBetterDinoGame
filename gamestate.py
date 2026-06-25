@@ -6,3 +6,4 @@ class GameState(Enum):
     TITLE = 0
     NEWGAME = 1
     LEADERBOARD = 2
+    DELETE_RUN = 3
