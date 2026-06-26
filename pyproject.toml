@@ -17,6 +17,12 @@ dev = [
     "coverage>=7.0",
 ]
 
+[tool.uv]
+package = true
+
+[project.scripts]
+dinogame = "frontend.dinogame:main"
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]

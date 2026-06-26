@@ -1,5 +1,5 @@
 import pygame
-from constants import OBSTACLE_SIZE, OBSTACLE_SPEED_MULT, TREE
+from .constants import OBSTACLE_SIZE, OBSTACLE_SPEED_MULT, TREE
 
 
 class Obstacle(pygame.sprite.Sprite):

@@ -1,5 +1,5 @@
 import pygame
-from constants import GRAVITY, PLAYER_SIZE, TREX
+from .constants import GRAVITY, PLAYER_SIZE, TREX
 
 
 class Player(pygame.sprite.Sprite):

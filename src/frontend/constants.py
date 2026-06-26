@@ -39,11 +39,19 @@ RETURN_MENU_BUTTON_FONT_SIZE = 25
 PLAYER_TEXT_FONT_SIZE = 15
 FONT = "courier-new"
 
-# asset paths
-SKY = Path("assets") / "noon.png"
-TREX = Path("assets") / "trex.png"
-GROUND = Path("assets") / "ground.png"
-TREE = Path("assets") / "tree.png"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LOCAL_SCORES = PROJECT_ROOT / ".local_scores" / "local_scores.json"
 
-# local scores path
-LOCAL_SCORES = "local_scores.json"
+# asset paths
+ASSETS_DIR = PROJECT_ROOT / "assets"
+AUDIO_DIR = ASSETS_DIR / "audio"
+
+SKY = ASSETS_DIR / "noon.png"
+TREX = ASSETS_DIR / "trex.png"
+GROUND = ASSETS_DIR / "ground.png"
+TREE = ASSETS_DIR / "tree.png"
+
+GAME_MUSIC = AUDIO_DIR / "game-music.mp3"
+GAME_OVER_SOUND = AUDIO_DIR / "game-over.mp3"
+JUMP_SOUND = AUDIO_DIR / "jump.mp3"
+

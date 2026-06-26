@@ -1,10 +1,10 @@
 import pygame
-from api_client import (
+from .api_client import (
     fetch_leaderboard_api_client,
 )
 
-from button import Button
-from constants import (
+from .button import Button
+from .constants import (
     FONT,
     SCORE_FONT_SIZE, 
     BUTTON_FONT_SIZE, 
@@ -15,7 +15,7 @@ from constants import (
     SCREEN_SIZE,
     PROMPT_FONT_SIZE,
 )
-from gamestate import GameState
+from .gamestate import GameState
 
 def display_score(screen: pygame.Surface, score: float) -> None:
     font = pygame.font.SysFont(FONT, SCORE_FONT_SIZE)

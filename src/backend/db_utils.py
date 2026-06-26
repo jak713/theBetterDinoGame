@@ -1,5 +1,5 @@
 import mysql.connector
-from config import db_config
+from .config import db_config
 
 
 class DatabaseManager:

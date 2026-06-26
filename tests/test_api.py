@@ -1,6 +1,6 @@
 import pytest
-from api import app
-import api
+from backend.api import app
+import backend.api as api
 
 
 @pytest.fixture

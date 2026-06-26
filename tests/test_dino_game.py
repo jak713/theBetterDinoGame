@@ -1,10 +1,10 @@
 """Tests for any game logic/adjacent. This will not cover any rendering/display functions"""
 
 import pytest
-from dinogame import clean_username 
-from gamerun import GameRun
-from constants import SCORE_MULTIPLIER
-from gamestate import GameState
+from frontend.dinogame import clean_username 
+from frontend.gamerun import GameRun
+from frontend.constants import SCORE_MULTIPLIER
+from frontend.gamestate import GameState
 
 @pytest.fixture
 def run():

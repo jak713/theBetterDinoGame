@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
-from gamestate import GameState
-from constants import LOCAL_SCORES
+from .gamestate import GameState
+from .constants import LOCAL_SCORES
 
 
 @dataclass

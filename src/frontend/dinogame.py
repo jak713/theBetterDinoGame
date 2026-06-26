@@ -2,7 +2,7 @@ from sys import exit
 
 import pygame
 
-from constants import (
+from .constants import (
     FONT,
     FPS,
     SCORE_MULTIPLIER,
@@ -12,16 +12,20 @@ from constants import (
     GROUND,
     GROUND_SIZE,
     BACKGROUND_COLOUR,
-    GROUND_COLOUR
-)
-from gamestate import GameState
-from obstaclefield import ObstacleField
-from player import Player
-from gamerun import GameRun
-from local_scores import get_top_score
-from displayfunctions import display_score, leaderboard, game_over, title_screen
+    GROUND_COLOUR,
+    JUMP_SOUND,
+    GAME_MUSIC,
+    GAME_OVER_SOUND,
 
-from api_client import (
+)
+from .gamestate import GameState
+from .obstaclefield import ObstacleField
+from .player import Player
+from .gamerun import GameRun
+from .local_scores import get_top_score
+from .displayfunctions import display_score, leaderboard, game_over, title_screen
+
+from .api_client import (
     create_player_api_client,
     create_game_run_api_client,
     update_game_run_api_client,    
@@ -42,12 +46,12 @@ def load_sound() -> tuple[pygame.mixer.Sound, pygame.mixer.Sound]:
         pygame.mixer.init()
 
         # load sound
-        pygame.mixer.music.load("audio/game-music.mp3")
+        pygame.mixer.music.load(GAME_MUSIC)
         pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.play(-1, 0.0, 5000)
-        jump_fx = pygame.mixer.Sound("audio/jump.mp3")
+        jump_fx = pygame.mixer.Sound(JUMP_SOUND)
         jump_fx.set_volume(0.3)
-        game_over_fx = pygame.mixer.Sound("audio/game-over.mp3")
+        game_over_fx = pygame.mixer.Sound(GAME_OVER_SOUND)
         game_over_fx.set_volume(0.3)
         return jump_fx, game_over_fx
 

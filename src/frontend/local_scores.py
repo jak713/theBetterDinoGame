@@ -1,5 +1,5 @@
 import json
-from constants import LOCAL_SCORES
+from .constants import LOCAL_SCORES
 
 def _get_scores(file: str) -> list[dict]:
     try:

@@ -1,4 +1,4 @@
-from local_scores import merge_sort_scores, _merge, _get_scores
+from frontend.local_scores import merge_sort_scores, _merge, _get_scores
 
 class TestLocalScores:
     def test_merge_sort_empty_returns_empty_array(self):
