@@ -100,9 +100,9 @@ This command installs all dependencies listed in `pyproject.toml` and ensures al
        "database": "dino_game"
    }
 ```
-3. Run the SQL schema to create the database and tables:
+3. Navigate to `src/backend/db` and run the SQL schema to create the database and tables:
 ```bash
-   mysql -u root -p < Pygame_DB.sql
+   mysql -u root -p < schema.sql
 ```
 
 ## Running the Application
