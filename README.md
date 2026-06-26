@@ -24,30 +24,48 @@ pip install uv
 ### Project Structure
 ``` Code
 .
+├── assets
+│   ├── audio
+│   │   ├── game-music.mp3
+│   │   ├── game-over.mp3
+│   │   └── jump.mp3
+│   ├── ground.png
+│   ├── noon.png
+│   ├── sky.png
+│   ├── tree.png
+│   └── trex.png
 ├── LICENSE
-├── .gitattributes
-├── .gitignore
-├── .python-version
-├── Pygame_DB.sql
-├── README.md
-├── api.py
-├── audio
-│   ├── game-music.mp3
-│   ├── game-over.mp3
-│   └── jump.mp3
-├── button.py
-├── config_template.py        # change to config.py and fill in template
-├── constants.py
-├── db_utils.py
-├── dino-game.py
-├── gamestate.py
-├── obstacle.py
-├── obstaclefield.py
-├── player.py
 ├── pyproject.toml
+├── README.md
+├── src
+│   ├── backend
+│   │   ├── api.py
+│   │   ├── config_template.py
+│   │   ├── config.py
+│   │   ├── db
+│   │   │   └── schema.sql
+│   │   └── db_utils.py
+│   ├── frontend
+│   │   ├── api_client.py
+│   │   ├── button.py
+│   │   ├── constants.py
+│   │   ├── dinogame.py
+│   │   ├── displayfunctions.py
+│   │   ├── gamerun.py
+│   │   ├── gamestate.py
+│   │   ├── local_scores.py
+│   │   ├── obstacle.py
+│   │   ├── obstaclefield.py
+│   │   └── player.py
+├── tests
+│   ├── test_api.py
+│   ├── test_dino_game.py
+│   └── test_local_scores.py
 └── uv.lock
-```
 
+
+
+```
 
 ### Virtual Environment & Project Dependencies Configuration
 1. Clone the repository and navigate into it:
@@ -92,12 +110,12 @@ Open two separate terminals and run:
 
 Terminal 1 - start the API:
 ```bash
-uv run api.py
+uv run api
 ```
 
 Terminal 2 - start the game:
 ```bash
-uv run dino-game.py
+uv run dinogame
 ```
 
 ## API Endpoints

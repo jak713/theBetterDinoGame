@@ -77,6 +77,8 @@ def delete_game_run_api(game_run_id):
 
     return jsonify({"error": "Game run not found"}), 404
 
+def main() -> None:
+    app.run(debug=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
