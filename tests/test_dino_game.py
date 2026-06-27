@@ -3,7 +3,7 @@
 import pytest
 from frontend.dinogame import clean_username 
 from frontend.gamerun import GameRun
-from frontend.constants import SCORE_MULTIPLIER, LOCAL_SCORE
+from frontend.constants import SCORE_MULTIPLIER, LOCAL_SCORES
 from frontend.gamestate import GameState
 
 @pytest.fixture
