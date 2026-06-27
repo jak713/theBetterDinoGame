@@ -75,15 +75,10 @@ pip install uv
    ```
 
 If using PyCharm, you may simply open the repository folder in PyCharm. PyCharm will automatically detect your configuration and handle creating and managing the virtual environment via `uv` for you.
-
-2. If using the terminal, create your virtual environment (uv will automatically download Python 3.13 if your system lacks it):
-   ```bash
-   uv venv
-   ```
    
-3. Installing Dependencies with uv
+2. Installing Dependencies with uv
 
-After activating your virtual environment, install all project dependencies using:
+Create your virtual environment and install all project dependencies using:
    ```bash
    uv sync
    ```
