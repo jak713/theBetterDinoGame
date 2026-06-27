@@ -44,6 +44,8 @@ class GameRun:
 
         # add current data to scores
         scores.append({"username": self.username, "score": int(self.score)})
+        # make sure subdir .local_scores exists, or make it if needed
+        LOCAL_SCORES.parent.mkdir(exist_ok=True, parents=True)
 
         with open(LOCAL_SCORES, 'w') as f:
             json.dump(scores, f)
