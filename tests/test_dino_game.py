@@ -3,7 +3,7 @@
 import pytest
 from frontend.dinogame import clean_username 
 from frontend.gamerun import GameRun
-from frontend.constants import SCORE_MULTIPLIER
+from frontend.constants import SCORE_MULTIPLIER, LOCAL_SCORE
 from frontend.gamestate import GameState
 
 @pytest.fixture
@@ -39,3 +39,6 @@ class TestGameRun:
         run.update_score(0.1,SCORE_MULTIPLIER)
         assert run.final_score() > 0
 
+    def test_gamerun_createa_local_scores_file(self, run):
+        run.save_to_file()
+        assert LOCAL_SCORES.exists() is True
