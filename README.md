@@ -1,10 +1,14 @@
-# Dino Game (name WIP)
+# Dino Game
 
 ## About
 
 A dinosaur-themed game built with Pygame, connected to a Flask API and MySQL database. 
-Players choose a unique username for the dinosaur and aim to jump over obstacles for as long as possible. 
+Players choose a unique username for the dinosaur and aim to jump over obstacles using the spacebar or up arrow for as long as possible. 
 Scores are saved automatically to a leaderboard so players can track and compare their performances across sessions.
+
+## Preview
+
+![Preview gif of the game](dinogamegif.gif)
 
 ## Notes for Developers
 
